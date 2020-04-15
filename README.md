@@ -108,55 +108,53 @@ docker volume rm -f homestead_dbdata
 docker volume rm -f homestead_dbdata homestead_dbs
 ```
 
-## Laravel
+## Laravel Melhores Práticas.
 [Best Practices](https://www.laravelbestpractices.com).
 
-## Técnicas de Controle de Acesso de Usuários
-[Artigo](https://blog.welrbraga.eti.br/?p=642).
-[Simple RBAC/ACL for Laravel 5.5 caching and permission groups](https://github.com/YaroslavMolchan/rbac).
-[Role based access control for Laravel 5](https://packagist.org/packages/visualappeal/laravel-rbac).
-[Two Best Laravel Packages to Manage Roles/Permissions](https://laravel-news.com/two-best-roles-permissions-packages).
-[Light-weight role-based permissions system for Laravel 6 built in Auth system](https://github.com/kodeine/laravel-acl).
-[Laravel RBAC (Role Based Access Control) Model Relationship](https://stackoverflow.com/questions/24301274/laravel-rbac-role-based-access-control-model-relationship).
-[Laravel authorization and roles permission management](https://medium.com/swlh/laravel-authorization-and-roles-permission-management-6d8f2043ea20).
-[laravel-permission](https://docs.spatie.be/laravel-permission/v3/introduction).
-
-## Categoria de visualização hierárquica
-[Hierarchical Treeview Category Example in Laravel](https://www.codechief.org/article/hierarchical-treeview-category-example-in-laravel).
-[Laravel Treeview | Structure and Display Hierarchical Data Example](https://www.codechief.org/article/laravel-treeview-structure-and-display-hierarchical-data-example).
-[Structure and Display Hierarchical / Multi-level data in Laravel](https://www.5balloons.info/hierarchical-data-laravel-relationship-display).
-[Laravel - Category Treeview Hierarchical Structure Example with Demo](https://www.itsolutionstuff.com/post/laravel-5-category-treeview-hierarchical-structure-example-with-demoexample.html).
-
-## Nesteds
-[Effective tree structures in Laravel 4-5](https://github.com/lazychaser/laravel-nestedset).
-[Criar menu dynamic usando conjuntos nesteds](https://php.docow.com/criar-menu-dynamic-usando-conjuntos-nesteds.html).
-
-[Managing Hierarchical Data in MySQL](http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql).
-
-[Implementing Nested Order Set in MySQL/PHP](https://stackoverflow.com/questions/43201104/implementing-nested-order-set-in-mysql-php).
-
 ## Migrate & Seed
-[How to seed your database using PHP laravel](https://www.codementor.io/@chinemeremnwoga/how-to-seed-your-database-using-php-laravel-10mhltm0ts).
-[Como fazer a propagação de banco de dados no Laravel](https://artisansweb.net/database-seeding-laravel).
-[Forçando o faker a falar nossa língua](https://medium.com/@vs0uz4/for%C3%A7ando-o-faker-a-falar-nossa-l%C3%ADngua-72d9ee73244c).
-[Faker é uma biblioteca PHP que gera dados falsos para você](https://github.com/fzaninotto/Faker).
-
-## Laravel OCI8
-Installing Laravel OCI8: [yajra/laravel-oci8](https://yajrabox.com/docs/laravel-oci8/master/installation).
-[Utilizando Laravel e OCI8 em 4+1 passos](https://medium.com/@jhonatanvinicius/utilizando-laravel-e-oci8-em-4-passos-48278c4bb8cf).
-
-## Laravel and JWT
-[Laravel and JWT](https://blog.pusher.com/laravel-jwt).
-[JWT authentication for Lumen 5.4](https://dev.to/ziishaned/jwt-authentication-for-lumen-5-4-3d2m).
-[Build a JWT Authenticated API with Lumen(v5.8)](https://dev.to/ndiecodes/build-a-jwt-authenticated-api-with-lumen-2afm).
-[JWT Auth Guard for Lumen 5.4](https://github.com/gboyegadada/lumen-jwt).
-[Guide for setting up with Lumen? #1102](https://github.com/tymondesigns/jwt-auth/issues/1102).
-
-## API RESTful
-[Construindo uma API RESTful com Laravel - Parte 1](https://rafaell-lycan.com/2015/construindo-restful-api-laravel-parte-1).
-[Construindo uma API RESTful com Laravel - Parte 2](https://rafaell-lycan.com/2015/construindo-restful-api-laravel-parte-2).
-[Construindo uma API RESTful com Laravel - Parte 3](https://rafaell-lycan.com/2016/construindo-restful-api-laravel-parte-3).
+- [How to seed your database using PHP laravel](https://www.codementor.io/@chinemeremnwoga/how-to-seed-your-database-using-php-laravel-10mhltm0ts).
+- [Como fazer a propagação de banco de dados no Laravel](https://artisansweb.net/database-seeding-laravel).
+- [Forçando o faker a falar nossa língua](https://medium.com/@vs0uz4/for%C3%A7ando-o-faker-a-falar-nossa-l%C3%ADngua-72d9ee73244c).
+- [Faker é uma biblioteca PHP que gera dados falsos para você](https://github.com/fzaninotto/Faker).
 
 ## Localization
-Tradução do Laravel para português brasileiro (pt-BR) [lucascudo/laravel-pt-BR-localization](https://github.com/lucascudo/laravel-pt-BR-localization).
-A Laravel package for multilingual models [Astrotomic/laravel-translatable](https://docs.astrotomic.info/laravel-translatable).
+- Tradução do Laravel para português brasileiro (pt-BR) [lucascudo/laravel-pt-BR-localization](https://github.com/lucascudo/laravel-pt-BR-localization).
+- A Laravel package for multilingual models [Astrotomic/laravel-translatable](https://docs.astrotomic.info/laravel-translatable).
+
+## Laravel OCI8
+- Installing Laravel OCI8: [yajra/laravel-oci8](https://yajrabox.com/docs/laravel-oci8/master/installation).
+- [Utilizando Laravel e OCI8 em 4+1 passos](https://medium.com/@jhonatanvinicius/utilizando-laravel-e-oci8-em-4-passos-48278c4bb8cf).
+
+## API RESTful
+- [Construindo uma API RESTful com Laravel - Parte 1](https://rafaell-lycan.com/2015/construindo-restful-api-laravel-parte-1).
+- [Construindo uma API RESTful com Laravel - Parte 2](https://rafaell-lycan.com/2015/construindo-restful-api-laravel-parte-2).
+- [Construindo uma API RESTful com Laravel - Parte 3](https://rafaell-lycan.com/2016/construindo-restful-api-laravel-parte-3).
+
+## Laravel and JWT
+- [Laravel and JWT](https://blog.pusher.com/laravel-jwt).
+- [JWT authentication for Lumen 5.4](https://dev.to/ziishaned/jwt-authentication-for-lumen-5-4-3d2m).
+- [Build a JWT Authenticated API with Lumen(v5.8)](https://dev.to/ndiecodes/build-a-jwt-authenticated-api-with-lumen-2afm).
+- [JWT Auth Guard for Lumen 5.4](https://github.com/gboyegadada/lumen-jwt).
+- [Guide for setting up with Lumen? #1102](https://github.com/tymondesigns/jwt-auth/issues/1102).
+
+## Técnicas de Controle de Acesso de Usuários
+- [Artigo](https://blog.welrbraga.eti.br/?p=642).
+- [Simple RBAC/ACL for Laravel 5.5 caching and permission groups](https://github.com/YaroslavMolchan/rbac).
+- [Role based access control for Laravel 5](https://packagist.org/packages/visualappeal/laravel-rbac).
+- [Two Best Laravel Packages to Manage Roles/Permissions](https://laravel-news.com/two-best-roles-permissions-packages).
+- [Light-weight role-based permissions system for Laravel 6 built in Auth system](https://github.com/kodeine/laravel-acl).
+- [Laravel RBAC (Role Based Access Control) Model Relationship](https://stackoverflow.com/questions/24301274/laravel-rbac-role-based-access-control-model-relationship).
+- [Laravel authorization and roles permission management](https://medium.com/swlh/laravel-authorization-and-roles-permission-management-6d8f2043ea20).
+- [laravel-permission](https://docs.spatie.be/laravel-permission/v3/introduction).
+
+## Categoria de visualização hierárquica
+- [Hierarchical Treeview Category Example in Laravel](https://www.codechief.org/article/hierarchical-treeview-category-example-in-laravel).
+- [Laravel Treeview | Structure and Display Hierarchical Data Example](https://www.codechief.org/article/laravel-treeview-structure-and-display-hierarchical-data-example).
+- [Structure and Display Hierarchical / Multi-level data in Laravel](https://www.5balloons.info/hierarchical-data-laravel-relationship-display).
+- [Laravel - Category Treeview Hierarchical Structure Example with Demo](https://www.itsolutionstuff.com/post/laravel-5-category-treeview-hierarchical-structure-example-with-demoexample.html).
+
+## Nesteds
+- [Effective tree structures in Laravel 4-5](https://github.com/lazychaser/laravel-nestedset).
+- [Criar menu dynamic usando conjuntos nesteds](https://php.docow.com/criar-menu-dynamic-usando-conjuntos-nesteds.html).
+- [Implementing Nested Order Set in MySQL/PHP](https://stackoverflow.com/questions/43201104/implementing-nested-order-set-in-mysql-php).
+- [Managing Hierarchical Data in MySQL](http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql).
