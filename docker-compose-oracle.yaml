@@ -1,0 +1,135 @@
+version: "2.4"
+
+#
+# [ volumes definition ]
+#
+# creates Docker volumes which can be mounted by other containers too e.g. for backup
+#
+volumes:
+  # logs:
+  #   name: homestead_logs
+  # files:
+  #   name: homestead_files
+  dbdata:
+    name: homestead_dbdata
+  dbs:
+    name: homestead_dbs
+
+#
+# [ networks definition ]
+#
+# networks:
+#   frontend:
+#     driver: bridge
+#   backend:
+#     driver: bridge
+
+services:
+  #
+  # [ server stack ]
+  #
+  # - php-cli
+  # - oracle
+  #
+  php-cli:
+    image: rodrixcornell/php:7.2-oci-cli
+    container_name: php-cli
+    hostname: php-cli
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    env_file:
+    - .env
+
+    environment:
+      docker: "true"
+      # https_proxy: "${https_proxy}"
+      # http_proxy: "${http_proxy}"
+      # ftp_proxy: "${ftp_proxy}"
+      # no_proxy: "${no_proxy}"
+      TZ: "America/Manaus"
+      DB_CONNECTION: "oracle"
+      DB_HOST: "oracle"
+      DB_PORT: "1521"
+      DB_SERVICE_NAME: "xe"
+      DB_DATABASE: "xe"
+      DB_USERNAME: "homestead"
+      DB_PASSWORD: "secret"
+      DB_CHARSET: "AL32UTF8"
+
+    ports:
+      - 8080:8080
+
+    extra_hosts:
+      - pitua:172.17.104.15
+      - curuduri:172.17.131.45
+      - cubatao:172.17.131.4
+      - divisa:172.17.131.24
+      - jaragua:172.17.131.44
+
+    # working_dir: /var/www/public
+    # working_dir: /api
+    working_dir: /opt/app-root/src
+
+    volumes:
+      - .:/opt/app-root/src
+      - /tmp:/opt/app-root/src/storage/logs
+      - /tmp:/opt/app-root/src/storage/framework/views
+      - /tmp:/opt/app-root/src/storage/framework/testing
+      - /tmp:/opt/app-root/src/storage/framework/sessions
+      - /tmp:/opt/app-root/src/storage/framework/cache/data
+      # - ./docker/php-fpm/files:/opt/app-root/src/public/files
+      # - .:/var/www
+
+    depends_on:
+      - oracle
+
+    links:
+      - oracle
+
+    network_mode: bridge
+    # networks:
+    #   - backend
+
+    # command: php -welsS [::]:8080 -t public public/index.php
+    command: ./artisan serve --verbose --no-interaction --host=php-cli --port=8080
+    # command: bash -c "sleep 10m && .docker/./wait-for-it.sh oracle:1521 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
+
+  oracle:
+    image: rodrixcornell/oracle:11.2.0.2-xe
+    container_name: oracle
+    hostname: oracle
+
+    cpu_shares: 512
+    shm_size: 1g
+    mem_reservation: 512m
+    mem_limit: 2g
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    environment:
+      TZ: "America/Manaus"
+      # ORACLE_SID: "xe" # default: ORCLCDB
+      # ORACLE_PDB: "homestead" # default: ORCLPDB1
+      ORACLE_PWD: "secret" # default: auto generated
+      # ORACLE_CHARACTERSET: "AL32UTF8" # default: AL32UTF8
+
+    ports:
+      - "1521:1521"
+      - "15210:8080"
+
+    volumes:
+      - ./.docker/oracle/initial_data:/docker-entrypoint-initdb.d/setup
+      # - ./.docker/oracle/initial_data:/docker-entrypoint-initdb.d/startup
+      - dbdata:/u01/app/oracle/oradata # persistent oracle database data.
+      - dbs:/u01/app/oracle/product/11.2.0/xe/dbs
+
+    network_mode: bridge
+    # networks:
+    #   - backend

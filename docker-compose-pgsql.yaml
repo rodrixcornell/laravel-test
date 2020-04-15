@@ -1,0 +1,186 @@
+version: "2.4"
+
+#
+# [ volumes definition ]
+#
+# creates Docker volumes which can be mounted by other containers too e.g. for backup
+#
+volumes:
+  # logs:
+  #   name: homestead_logs
+  # files:
+  #   name: homestead_files
+  dbdata:
+    name: homestead_dbdata
+  # admdata:
+  #   name: pgadmin_homestead_dbdata
+
+#
+# [ networks definition ]
+#
+# networks:
+#   frontend:
+#     driver: bridge
+#   backend:
+#     driver: bridge
+
+services:
+  #
+  # [ server stack ]
+  #
+  # - php-cli
+  # - mysql
+  # - adminer
+  # - pgadmin
+  #
+  php-cli:
+    image: rodrixcornell/php:7.2-pgsql-cli
+    container_name: php-cli
+    hostname: php-cli
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    env_file:
+    - .env
+
+    environment:
+      docker: "true"
+      # https_proxy: "${https_proxy}"
+      # http_proxy: "${http_proxy}"
+      # ftp_proxy: "${ftp_proxy}"
+      # no_proxy: "${no_proxy}"
+      TZ: "America/Manaus"
+
+    ports:
+      - 8080:8080
+
+    extra_hosts:
+      - pitua:172.17.104.15
+      - curuduri:172.17.131.45
+      - cubatao:172.17.131.4
+      - divisa:172.17.131.24
+      - jaragua:172.17.131.44
+
+    # working_dir: /var/www/public
+    # working_dir: /api
+    working_dir: /opt/app-root/src
+
+    volumes:
+      - .:/opt/app-root/src
+      - /tmp:/opt/app-root/src/storage/logs
+      - /tmp:/opt/app-root/src/storage/framework/views
+      - /tmp:/opt/app-root/src/storage/framework/testing
+      - /tmp:/opt/app-root/src/storage/framework/sessions
+      - /tmp:/opt/app-root/src/storage/framework/cache/data
+      # - ./docker/php-fpm/files:/opt/app-root/src/public/files
+      # - .:/var/www
+
+    depends_on:
+      - pgsql
+
+    links:
+      - pgsql
+
+    network_mode: bridge
+    # networks:
+    #   - backend
+
+    # command: php -welsS [::]:8080 -t public public/index.php
+    command: bash -c ".docker/./wait-for-it.sh pgsql:5432 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
+
+  pgsql:
+    image: postgres:12.2
+    container_name: pgsql
+    hostname: pgsql
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    environment:
+      TZ: "America/Manaus"
+      POSTGRES_DB: "homestead"
+      POSTGRES_USER: "homestead"
+      POSTGRES_PASSWORD: "secret"
+
+    ports:
+      - 5432:5432
+
+    volumes:
+      # - ./pgsql/initial_data:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/postgresql/data
+
+    network_mode: bridge
+    # networks:
+    #   - backend
+
+  adminer:
+    image: adminer:4.7.6
+    container_name: adminer
+    hostname: adminer
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    environment:
+      ADMINER_DESIGN: nette
+      ADMINER_DEFAULT_SERVER: pgsql
+
+    ports:
+      - 54320:8080
+
+    # depends_on:
+    #   - pgsql
+
+    links:
+      - pgsql
+
+    network_mode: bridge
+    # networks:
+    #   - frontend
+    #   - backend
+
+  # pgadmin:
+  #   image: dpage/pgadmin4:4.20
+  #   container_name: pgadmin4
+  #   hostname: pgadmin4
+
+  #   cpu_shares: 128
+  #   mem_reservation: 128m
+  #   mem_limit: 256m
+  #   memswap_limit: -1
+  #   privileged: true
+  #   restart: always
+
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "homestead@homestead.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "secret"
+
+  #   ports:
+  #     - 54321:80
+
+  #   volumes:
+  #     - admdata:/var/lib/pgadmin
+
+  #   # depends_on:
+  #   #   - pgsql
+
+  #   links:
+  #     - "pgsql"
+
+  #   network_mode: "bridge"
+  #   # networks:
+  #   #   - frontend
+  #   #   - backend
