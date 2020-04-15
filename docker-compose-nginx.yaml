@@ -1,0 +1,134 @@
+version: "2.4"
+
+#
+# [ volumes definition ]
+#
+# creates Docker volumes which can be mounted by other containers too e.g. for backup
+#
+volumes:
+  # logs:
+  #   name: homestead_logs
+  # files:
+  #   name: homestead_files
+
+#
+# [ networks definition ]
+#
+# networks:
+#   frontend:
+#     driver: bridge
+#   backend:
+#     driver: bridge
+
+services:
+  #
+  # [ server stack ]
+  #
+  # - nginx
+  # - php-fpm
+  #
+  nginx:
+    image: nginx:1.17.9
+    container_name: nginx
+    hostname: nginx
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    environment:
+      docker: "true"
+      # https_proxy: "${https_proxy}"
+      # http_proxy: "${http_proxy}"
+      # ftp_proxy: "${ftp_proxy}"
+      # no_proxy: "${no_proxy}"
+      TZ: "America/Manaus"
+
+    ports:
+      - 8080:80
+      - 8443:443
+
+    # working_dir: /usr/share/nginx/html
+    working_dir: /opt/app-root/src
+
+    volumes:
+      - ./.docker/nginx/etc/tls:/etc/tls
+      - ./.docker/nginx/etc/nginx/fastcgi_params.conf:/etc/nginx/fastcgi_params
+      - ./.docker/nginx/etc/nginx/conf.d/homestead.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/usr/share/nginx/html:/usr/share/nginx/html
+
+      - .:/opt/app-root/src
+      # - ./docker/nginx/files:/opt/app-root/src/files
+
+    # depends_on:
+    #   - php-fpm
+
+    links:
+      - php-fpm
+
+    network_mode: bridge
+    # networks:
+    #   - frontend
+    #   - backend
+
+    command: nginx-debug -g 'daemon off;'
+
+  php-fpm:
+    image: rodrixcornell/php:7.2-pgsql-fpm
+    container_name: php-fpm
+    hostname: php-fpm
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    env_file:
+      - .env
+
+    environment:
+      docker: "true"
+      # https_proxy: "${https_proxy}"
+      # http_proxy: "${http_proxy}"
+      # ftp_proxy: "${ftp_proxy}"
+      # no_proxy: "${no_proxy}"
+      TZ: "America/Manaus"
+
+    # ports:
+    #   - 9009:9000
+
+    extra_hosts:
+      - pitua:172.17.104.15
+      - curuduri:172.17.131.45
+      - cubatao:172.17.131.4
+      - divisa:172.17.131.24
+      - jaragua:172.17.131.44
+
+    # working_dir: /var/www/public
+    # working_dir: /api
+    working_dir: /opt/app-root/src
+
+    volumes:
+      - .:/opt/app-root/src
+      - /tmp:/opt/app-root/src/storage/logs
+      - /tmp:/opt/app-root/src/storage/framework/views
+      - /tmp:/opt/app-root/src/storage/framework/testing
+      - /tmp:/opt/app-root/src/storage/framework/sessions
+      - /tmp:/opt/app-root/src/storage/framework/cache/data
+      # - ./docker/php-fpm/files:/opt/app-root/src/public/files
+      # - .:/var/www
+
+    # depends_on:
+    #   - pgsql
+
+    # links:
+    #   - pgsql
+
+    network_mode: bridge
+    # networks:
+    #   - backend
