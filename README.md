@@ -81,6 +81,33 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
+## Container Docker
+- NginX, php-fpm & Oracle: docker-compose-nginx-oracle.yaml
+- NginX, php-fpm & PostgreSQL: docker-compose-nginx-pgsql.yaml
+- NginX & php-fpm: docker-compose-nginx.yaml
+- php-cli "built-in web server" & Oracle: docker-compose-oracle.yaml
+- php-cli "built-in web server" & PostgreSQL: docker-compose-pgsql.yaml
+- php-cli "built-in web server": docker-compose.yaml
+
+```bash
+docker-compose --file docker-compose.yaml up --force-recreate --build --renew-anon-volumes --remove-orphans
+
+# oracle
+docker-compose exec php-cli bash
+docker exec -it php-fpm bash
+./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed
+
+# force delete container
+docker container rm -f pgsql adminer php-cli
+docker container rm -f pgsql adminer nginx php-fpm
+docker container rm -f oracle php-cli
+docker container rm -f oracle nginx php-fpm
+# pgsql
+docker volume rm -f homestead_dbdata
+# oracle
+docker volume rm -f homestead_dbdata homestead_dbs
+```
+
 ## Laravel
 [Best Practices](https://www.laravelbestpractices.com).
 
