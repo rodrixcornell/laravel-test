@@ -93,19 +93,20 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 docker-compose --file docker-compose.yaml up --force-recreate --build --renew-anon-volumes --remove-orphans
 
 # oracle
-docker-compose exec php-cli bash
-docker exec -it php-fpm bash
-./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed
+docker exec -it php-cli bash
+./artisan migrate:fresh --verbose --force --seed
 
 # force delete container
-docker container rm -f pgsql adminer php-cli
+docker container rm -f pgsql adminer pgadmin4 php-cli
+docker container rm -f pgsql adminer php-cli redmine
+docker container rm -f mysql adminer php-cli redmine
 docker container rm -f pgsql adminer nginx php-fpm
 docker container rm -f oracle php-cli
 docker container rm -f oracle nginx php-fpm
-# pgsql
-docker volume rm -f homestead_dbdata
+# pgsql & mysql
+docker volume rm -f homestead_dbdata homestead_dbdata_admin homestead_files
 # oracle
-docker volume rm -f homestead_dbdata homestead_dbs
+docker volume rm -f homestead_dbdata homestead_dbs homestead_files
 ```
 
 ## Laravel Melhores Práticas.

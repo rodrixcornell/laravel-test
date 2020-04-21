@@ -8,8 +8,8 @@ version: "2.4"
 volumes:
   # logs:
   #   name: homestead_logs
-  # files:
-  #   name: homestead_files
+  files:
+    name: homestead_files
   dbdata:
     name: homestead_dbdata
   dbs:
@@ -42,6 +42,7 @@ services:
     memswap_limit: -1
     privileged: true
     restart: always
+    tty: true
 
     env_file:
     - .env
@@ -53,6 +54,10 @@ services:
       # ftp_proxy: "${ftp_proxy}"
       # no_proxy: "${no_proxy}"
       TZ: "America/Manaus"
+      LANG: "pt_BR"
+      LANGUAGE: "pt_BR:pt:en"
+      APP_TZ: "America/Manaus"
+      LOG_CHANNEL: "stderr"
       DB_CONNECTION: "oracle"
       DB_HOST: "oracle"
       DB_PORT: "1521"
@@ -71,20 +76,22 @@ services:
       - cubatao:172.17.131.4
       - divisa:172.17.131.24
       - jaragua:172.17.131.44
+      - ararangua:172.17.135.110
 
-    # working_dir: /var/www/public
+    # working_dir: /var/www
     # working_dir: /api
     working_dir: /opt/app-root/src
 
     volumes:
+      # - .:/var/www
       - .:/opt/app-root/src
       - /tmp:/opt/app-root/src/storage/logs
       - /tmp:/opt/app-root/src/storage/framework/views
       - /tmp:/opt/app-root/src/storage/framework/testing
       - /tmp:/opt/app-root/src/storage/framework/sessions
       - /tmp:/opt/app-root/src/storage/framework/cache/data
-      # - ./docker/php-fpm/files:/opt/app-root/src/public/files
-      # - .:/var/www
+      # - ./docker/php/files:/opt/app-root/src/public/files
+      - files:/opt/app-root/src/storage/app/public/files
 
     depends_on:
       - oracle
@@ -98,7 +105,7 @@ services:
 
     # command: php -welsS [::]:8080 -t public public/index.php
     command: ./artisan serve --verbose --no-interaction --host=php-cli --port=8080
-    # command: bash -c "sleep 10m && .docker/./wait-for-it.sh oracle:1521 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
+    # command: bash -c "sleep 10m && .docker/./wait-for-it.sh oracle:1521 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
 
   oracle:
     image: rodrixcornell/oracle:11.2.0.2-xe
@@ -115,6 +122,8 @@ services:
 
     environment:
       TZ: "America/Manaus"
+      LANG: "pt_BR"
+      LANGUAGE: "pt_BR:pt:en"
       # ORACLE_SID: "xe" # default: ORCLCDB
       # ORACLE_PDB: "homestead" # default: ORCLPDB1
       ORACLE_PWD: "secret" # default: auto generated
@@ -123,6 +132,8 @@ services:
     ports:
       - "1521:1521"
       - "15210:8080"
+
+    working_dir: /u01/app/oracle
 
     volumes:
       - ./.docker/oracle/initial_data:/docker-entrypoint-initdb.d/setup

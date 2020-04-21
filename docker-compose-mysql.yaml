@@ -12,8 +12,6 @@ volumes:
     name: homestead_files
   dbdata:
     name: homestead_dbdata
-  admdata:
-    name: homestead_dbdata_admin
 
 #
 # [ networks definition ]
@@ -29,12 +27,12 @@ services:
   # [ server stack ]
   #
   # - php-cli
-  # - pgsql
+  # - mysql
   # - adminer
-  # - pgadmin
+  # - phpmyadmin
   #
   php-cli:
-    image: rodrixcornell/php:7.2-pgsql-cli
+    image: rodrixcornell/php:7.2-mysql-cli
     container_name: php-cli
     hostname: php-cli
 
@@ -59,6 +57,12 @@ services:
       LANGUAGE: "pt_BR:pt:en"
       APP_TZ: "America/Manaus"
       LOG_CHANNEL: "stderr"
+      DB_CONNECTION: "mysql"
+      DB_HOST: "mysql"
+      DB_PORT: "3306"
+      DB_DATABASE: "homestead"
+      DB_USERNAME: "homestead"
+      DB_PASSWORD: "secret"
 
     ports:
       - 8080:8080
@@ -87,10 +91,10 @@ services:
       - files:/opt/app-root/src/storage/app/public/files
 
     depends_on:
-      - pgsql
+      - mysql
 
     links:
-      - pgsql
+      - mysql
 
     network_mode: bridge
     # networks:
@@ -98,12 +102,13 @@ services:
 
     # command: php -welsS [::]:8080 -t public public/index.php
     command: ./artisan serve --verbose --no-interaction --host=php-cli --port=8080
-    # command: bash -c ".docker/./wait-for-it.sh pgsql:5432 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --drop-types --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
+    # command: bash -c ".docker/./wait-for-it.sh mysql:3306 -s -t 0 -- ./artisan migrate:fresh --verbose --drop-views --force --seed && ./artisan serve --verbose --no-interaction --host=php-cli --port=8080"
 
-  pgsql:
-    image: postgres:12.2
-    container_name: pgsql
-    hostname: pgsql
+  mysql:
+    # image: mysql:5.7.29
+    image: mysql:8.0.19
+    container_name: mysql
+    hostname: mysql
 
     cpu_shares: 128
     mem_reservation: 128m
@@ -114,25 +119,30 @@ services:
 
     environment:
       TZ: "America/Manaus"
-      # LANG: "pt_BR"
-      # LANGUAGE: "pt_BR:pt:en"
-      POSTGRES_DB: "homestead"
-      POSTGRES_USER: "homestead"
-      POSTGRES_PASSWORD: "secret"
-      PGDATA: "/var/lib/postgresql/data/homestead_data"
+      LANG: "pt_BR"
+      LANGUAGE: "pt_BR:pt:en"
+      MYSQL_ROOT_PASSWORD: "secret"
+      MYSQL_DATABASE: "homestead"
+      MYSQL_USER: "homestead"
+      MYSQL_PASSWORD: "secret"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "false"
+      MYSQL_RANDOM_ROOT_PASSWORD: "false"
 
     ports:
-      - 5432:5432
+      - 3306:3306
+      - 33060:33060
 
-    working_dir: /var/lib/postgresql
+    working_dir: /var/lib/mysql
 
     volumes:
-      # - ./pgsql/initial_data:/docker-entrypoint-initdb.d
-      - dbdata:/var/lib/postgresql/data
+      # - ./.docker/mysql/initial_data:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/mysql
 
-    network_mode: bridge
+    network_mode: "bridge"
     # networks:
     #   - backend
+
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
 
   adminer:
     image: adminer:4.7.6
@@ -148,49 +158,16 @@ services:
 
     environment:
       ADMINER_DESIGN: nette
-      ADMINER_DEFAULT_SERVER: pgsql
+      ADMINER_DEFAULT_SERVER: mysql
 
     ports:
-      - 54320:8080
+      - 33061:8080
 
-    # depends_on:
-    #   - pgsql
-
-    links:
-      - pgsql
-
-    network_mode: bridge
-    # networks:
-    #   - frontend
-    #   - backend
-
-  pgadmin:
-    image: dpage/pgadmin4:4.20
-    container_name: pgadmin4
-    hostname: pgadmin4
-
-    cpu_shares: 128
-    mem_reservation: 128m
-    mem_limit: 256m
-    memswap_limit: -1
-    privileged: true
-    restart: always
-
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "homestead@homestead.com"
-      PGADMIN_DEFAULT_PASSWORD: "secret"
-
-    ports:
-      - 54321:80
-
-    volumes:
-      - admdata:/var/lib/pgadmin
-
-    # depends_on:
-    #   - pgsql
+    depends_on:
+      - mysql
 
     links:
-      - "pgsql"
+      - mysql
 
     network_mode: "bridge"
     # networks:
@@ -214,12 +191,12 @@ services:
       LANG: "pt_BR"
       LANGUAGE: "pt_BR:pt:en"
       RAILS_ENV: "development"
-      REDMINE_DB_POSTGRES: "pgsql"
+      REDMINE_DB_MYSQL: "mysql"
       REDMINE_DB_PORT: "5432"
       REDMINE_DB_DATABASE: "homestead"
       REDMINE_DB_USERNAME: "homestead"
       REDMINE_DB_PASSWORD: "secret"
-      REDMINE_DB_ENCODING: "utf8"
+      REDMINE_DB_ENCODING: "utf8mb4"
       REDMINE_SECRET_KEY_BASE: "usEoHzvE@#q*@cj1tMSdcg"
 
     ports:
@@ -238,10 +215,10 @@ services:
       - files:/usr/src/redmine/files
 
     depends_on:
-      - pgsql
+      - mysql
 
     links:
-      - pgsql
+      - mysql
 
     network_mode: bridge
     # networks:
