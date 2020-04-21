@@ -138,7 +138,7 @@ services:
       # - ./.docker/mysql/initial_data:/docker-entrypoint-initdb.d
       - dbdata:/var/lib/mysql
 
-    network_mode: "bridge"
+    network_mode: bridge
     # networks:
     #   - backend
 
@@ -169,7 +169,7 @@ services:
     links:
       - mysql
 
-    network_mode: "bridge"
+    network_mode: bridge
     # networks:
     #   - frontend
     #   - backend
@@ -192,7 +192,7 @@ services:
       LANGUAGE: "pt_BR:pt:en"
       RAILS_ENV: "development"
       REDMINE_DB_MYSQL: "mysql"
-      REDMINE_DB_PORT: "5432"
+      REDMINE_DB_PORT: "3306"
       REDMINE_DB_DATABASE: "homestead"
       REDMINE_DB_USERNAME: "homestead"
       REDMINE_DB_PASSWORD: "secret"
