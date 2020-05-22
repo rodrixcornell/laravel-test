@@ -5,11 +5,11 @@ version: "2.4"
 #
 # creates Docker volumes which can be mounted by other containers too e.g. for backup
 #
-# volumes:
+volumes:
 #   logs:
 #     name: homestead_logs
-#   files:
-#     name: homestead_files
+  files:
+    name: homestead_files
 
 #
 # [ networks definition ]
@@ -37,6 +37,7 @@ services:
     memswap_limit: -1
     privileged: true
     restart: always
+    tty: true
 
     env_file:
     - .env

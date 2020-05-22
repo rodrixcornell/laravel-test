@@ -42,6 +42,7 @@ services:
     memswap_limit: -1
     privileged: true
     restart: always
+    tty: true
 
     env_file:
     - .env
@@ -145,7 +146,7 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
 
   adminer:
-    image: adminer:4.7.6
+    image: adminer:4.7.7
     container_name: adminer
     hostname: adminer
 

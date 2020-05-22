@@ -180,7 +180,7 @@ services:
     #   - backend
 
   adminer:
-    image: adminer:4.7.6
+    image: adminer:4.7.7
     container_name: adminer
     hostname: adminer
 

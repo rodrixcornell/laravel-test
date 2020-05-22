@@ -44,6 +44,7 @@ services:
     memswap_limit: -1
     privileged: true
     restart: always
+    tty: true
 
     env_file:
     - .env
@@ -135,7 +136,7 @@ services:
     #   - backend
 
   adminer:
-    image: adminer:4.7.6
+    image: adminer:4.7.7
     container_name: adminer
     hostname: adminer
 
