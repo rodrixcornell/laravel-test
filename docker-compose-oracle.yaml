@@ -32,7 +32,7 @@ services:
   # - oracle
   #
   php-cli:
-    image: rodrixcornell/php:7.2-oci-cli
+    image: rodrixcornell/php:7.4-oci-cli
     container_name: php-cli
     hostname: php-cli
 

@@ -33,7 +33,7 @@ services:
   # - oracle
   #
   nginx:
-    image: nginx:1.17.9
+    image: nginx:1.17.10
     container_name: nginx
     hostname: nginx
 
@@ -84,7 +84,7 @@ services:
     command: nginx-debug -g 'daemon off;'
 
   php-fpm:
-    image: rodrixcornell/php:7.2-oci-fpm
+    image: rodrixcornell/php:7.4-oci-fpm
     container_name: php-fpm
     hostname: php-fpm
 

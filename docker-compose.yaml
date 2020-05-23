@@ -27,7 +27,7 @@ services:
   # - php-cli
   #
   php-cli:
-    image: rodrixcornell/php:7.2-cli
+    image: rodrixcornell/php:7.4-cli
     container_name: php-cli
     hostname: php-cli
 
@@ -72,11 +72,11 @@ services:
     volumes:
       # - .:/var/www
       - .:/opt/app-root/src
-      - /tmp:/opt/app-root/src/storage/logs
-      - /tmp:/opt/app-root/src/storage/framework/views
-      - /tmp:/opt/app-root/src/storage/framework/testing
-      - /tmp:/opt/app-root/src/storage/framework/sessions
-      - /tmp:/opt/app-root/src/storage/framework/cache/data
+      # - /tmp:/opt/app-root/src/storage/logs
+      # - /tmp:/opt/app-root/src/storage/framework/views
+      # - /tmp:/opt/app-root/src/storage/framework/testing
+      # - /tmp:/opt/app-root/src/storage/framework/sessions
+      # - /tmp:/opt/app-root/src/storage/framework/cache/data
       # - ./docker/php/files:/opt/app-root/src/public/files
       - files:/opt/app-root/src/storage/app/public/files
 

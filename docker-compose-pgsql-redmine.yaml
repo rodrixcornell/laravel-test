@@ -197,3 +197,53 @@ services:
     # networks:
     #   - frontend
     #   - backend
+
+  redmine:
+    image: redmine:4.1.1-passenger
+    container_name: redmine
+    hostname: redmine
+
+    cpu_shares: 128
+    mem_reservation: 128m
+    mem_limit: 256m
+    memswap_limit: -1
+    privileged: true
+    restart: always
+
+    environment:
+      TZ: "America/Manaus"
+      LANG: "pt_BR"
+      LANGUAGE: "pt_BR:pt:en"
+      RAILS_ENV: "development"
+      REDMINE_DB_POSTGRES: "pgsql"
+      REDMINE_DB_PORT: "5432"
+      REDMINE_DB_DATABASE: "homestead"
+      REDMINE_DB_USERNAME: "homestead"
+      REDMINE_DB_PASSWORD: "secret"
+      REDMINE_DB_ENCODING: "utf8"
+      REDMINE_SECRET_KEY_BASE: "usEoHzvE@#q*@cj1tMSdcg"
+
+    ports:
+      - 3000:3000
+
+    working_dir: /usr/src/redmine
+
+    volumes:
+      - ./.docker/redmine/config/additional_environment.rb:/usr/src/redmine/config/additional_environment.rb
+      - ./.docker/redmine/config/configuration.yml:/usr/src/redmine/config/configuration.yml
+      # - ./.docker/redmine/config:/usr/src/redmine/config
+      # - ./.docker/redmine/sqlite:/usr/src/redmine/sqlite
+      # - ./.docker/redmine/log:/usr/src/redmine/log
+      # - ./.docker/redmine/files:/usr/src/redmine/files
+      # - ./.docker/redmine/public/plugin_assets:/usr/src/redmine/public/plugin_assets
+      - files:/usr/src/redmine/files
+
+    depends_on:
+      - pgsql
+
+    links:
+      - pgsql
+
+    network_mode: bridge
+    # networks:
+    #   - backend

@@ -28,7 +28,7 @@ services:
   # - php-fpm
   #
   nginx:
-    image: nginx:1.17.9
+    image: nginx:1.17.10
     container_name: nginx
     hostname: nginx
 
@@ -79,7 +79,7 @@ services:
     command: nginx-debug -g 'daemon off;'
 
   php-fpm:
-    image: rodrixcornell/php:7.2-pgsql-fpm
+    image: rodrixcornell/php:7.4-pgsql-fpm
     container_name: php-fpm
     hostname: php-fpm
 
@@ -123,11 +123,11 @@ services:
     volumes:
       # - .:/var/www
       - .:/opt/app-root/src
-      - /tmp:/opt/app-root/src/storage/logs
-      - /tmp:/opt/app-root/src/storage/framework/views
-      - /tmp:/opt/app-root/src/storage/framework/testing
-      - /tmp:/opt/app-root/src/storage/framework/sessions
-      - /tmp:/opt/app-root/src/storage/framework/cache/data
+      # - /tmp:/opt/app-root/src/storage/logs
+      # - /tmp:/opt/app-root/src/storage/framework/views
+      # - /tmp:/opt/app-root/src/storage/framework/testing
+      # - /tmp:/opt/app-root/src/storage/framework/sessions
+      # - /tmp:/opt/app-root/src/storage/framework/cache/data
       # - ./docker/php/files:/opt/app-root/src/public/files
       - files:/opt/app-root/src/storage/app/public/files
 
