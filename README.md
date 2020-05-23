@@ -108,9 +108,9 @@ docker volume rm -f homestead_dbdata homestead_dbdata_admin homestead_files
 # oracle
 docker volume rm -f homestead_dbdata homestead_dbs homestead_files
 ```
+## [Laravel IDE Helper](https://github.com/barryvdh/laravel-ide-helper)
 
-## Laravel Melhores Práticas.
-[Best Practices](https://www.laravelbestpractices.com).
+## [Laravel Melhores Práticas.](https://www.laravelbestpractices.com).
 
 ## Migrate & Seed
 - [How to seed your database using PHP laravel](https://www.codementor.io/@chinemeremnwoga/how-to-seed-your-database-using-php-laravel-10mhltm0ts).
